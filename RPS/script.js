@@ -1,31 +1,20 @@
+var rock = document.getElementById("rock");
+var paper = document.getElementById("paper");
+var scissors = document.getElementById("s");
+var CS = document.getElementById("span1");
+var HS = document.getElementById("span2");
+var reset = document.getElementById("reset");
+var para = document.getElementById("para");
+var HumanScore = 0;
+var ComputerScore = 0;
+var maxRounds = 5;
 
-var HumanScore = 0
-var ComputerScore = 0
+
 function getComputerChoice()
 {
-    return Math.floor(Math.random()*3)
+    return Math.floor(Math.random()*3);
     // 0 is rock 1 is paper and 2 is sciccor
 }
-
-
-function getHumanChoice()
-{
-    var choice = prompt("Rock, paper or scissors?");
-    switch (choice.toLowerCase())
-    {
-        case "rock":
-            return 0
-        case "paper":
-            return 1
-        case "scissors":
-            return 2
-        
-
-    }
-
-}
-
-
 function playRound(humanChoice, computerChoice) 
 {
     if ((humanChoice === 0 && computerChoice === 1) ||
@@ -33,47 +22,81 @@ function playRound(humanChoice, computerChoice)
     (humanChoice === 2 && computerChoice === 0))
     {
         ComputerScore++;
-        return "You lose :("
+        CS.textContent = String(ComputerScore);
+        para.textContent = "You lost this round :("
     }
-    else if (humanChoice === computerChoice)
+    else if(humanChoice === computerChoice)
     {
-        return "It's a tie!!";
-            
+        para.textContent = "It's a tie!!"
     }
+    
     else{
         HumanScore ++;
-        return "You win :)"
+        HS.textContent = String(HumanScore);
+        para.textContent = "You won this round :)"
     }
+    
+    
+    maxRounds--;
+    if (maxRounds === 0)
+    {
         
-}
-
-
-function playGame()
-
+        gameResult()
+        
+    }
+}   
+function gameResult()
 {
-   
-    for (var i = 0; i < 5; i++)
+    
+    if (ComputerScore > HumanScore) 
     {
-        const computerSelection = getComputerChoice()
-        const hummanSelection = getHumanChoice()
-        
-        playRound(hummanSelection, computerSelection)
-        
-        console.log(playRound(hummanSelection, computerSelection))
-
-    }
-    if (ComputerScore > HumanScore)
-    {
-        return "You lost the game!!"
-    }
+        reset.style.display = "block";
+        para.textContent = "You lost the game."
+        reset.textContent = "Play Again";
+    } 
     else if (ComputerScore === HumanScore)
     {
-        return "Tie!!!"
+        reset.style.display = "block";
+        para.textContent = "the game is a tie."
+        reset.textContent = "Play Again";
+    } 
+    else 
+    {
+        reset.style.display = "block";
+        para.textContent = "You won the game."
+        reset.textContent = "Play Again";
+    }
+}
+function click(humanChoice)
+{
+    if (maxRounds <= 0)
+    {
+        alert("game has ended, click 'play agin'.")
     }
     else{
-        return "Congrats! you won."
+        var compChoice = getComputerChoice();
+        playRound(humanChoice, compChoice)
     }
-    
-    
 }
-console.log(playGame())
+rock.addEventListener("click", ()=>{
+    click(0)
+
+})
+paper.addEventListener("click", ()=>{
+    click(1)
+        
+})
+scissors.addEventListener("click", ()=>{
+    click(2)
+       
+        
+})
+reset.addEventListener("click", ()=>{
+    location.reload();
+})
+
+
+
+
+
+
